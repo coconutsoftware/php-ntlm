@@ -79,8 +79,14 @@ class SoapClient extends \SoapClient
 
     /**
      * {@inheritdoc}
+     *
+     * PHP 8.5 added the $uriParserClass parameter to SoapClient::__doRequest().
+     * A child that declares fewer parameters than its parent is a fatal error
+     * at declaration time, so the parameter is accepted here. It is unused:
+     * this class replaces the transport with curl and never follows the
+     * Location header that the parameter governs.
      */
-    public function __doRequest(string $request, string $location, string $action, int $version, bool $oneWay = false): ?string
+    public function __doRequest(string $request, string $location, string $action, int $version, bool $oneWay = false, ?string $uriParserClass = null): ?string
 	{
         $headers = $this->buildHeaders($action);
         $this->__last_request = $request;
